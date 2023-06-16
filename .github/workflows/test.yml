@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
     tags:
-      - 'v0.1.*'
+      - 'v0.2.0'
 
 permissions:
   contents: write
@@ -20,12 +20,6 @@ jobs:
 
     steps:
 
-        # - name: Print current directory
-        #   run: pwd
-
-        # - name: Publish files to Github Release
-        #   run: goreleaser release --clean
-
         - uses: actions/checkout@v3
           with:
             fetch-depth: 0
@@ -35,25 +29,6 @@ jobs:
             go-version: stable
         # More assembly might be required: Docker logins, GPG, etc. It all depends
         # on your needs.
-
-        - name: Get latest tag
-          id: latest_tag
-          run: |
-            LATEST_TAG=$(git describe --tags --abbrev=0)
-            echo "::set-output name=tag::$LATEST_TAG"
-
-        # Extract the numeric part of the tag and increment it
-        - name: Determine next tag
-          id: next_tag
-          run: |
-            TAG=${{ steps.latest_tag.outputs.tag }}
-            NEXT_TAG=v0.1.$((10#${TAG#"v0.1."} + 1))
-            echo "::set-output name=tag::$NEXT_TAG"
-
-        - name: Tag release
-          run: |
-            git tag ${{ steps.next_tag.outputs.tag }}
-            git push origin ${{ steps.next_tag.outputs.tag }}
 
         - uses: goreleaser/goreleaser-action@v4
           with:
