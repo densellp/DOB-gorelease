@@ -17,7 +17,7 @@ jobs:
     runs-on: self-hosted
     env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
-
+        NEW_TAG: v0.1.${{ github.run_number }}
     steps:
 
         # - name: Print current directory
@@ -36,8 +36,8 @@ jobs:
         # More assembly might be required: Docker logins, GPG, etc. It all depends
         # on your needs.
 
-        # - name: Tag release
-        #   run: git tag -f v1.0.1
+        - name: Tag release
+          run: git tag ${{ env.NEW_TAG }}
 
         - uses: goreleaser/goreleaser-action@v4
           with:
