@@ -1,10 +1,14 @@
 name: Gobrew Build an publish
 
 on:
-  push:
+  # push:
+  #   branches: [ main ]
+  #   tags:
+  #     - 'v0.2.0'
+  pull_request:
     branches: [ main ]
-    tags:
-      - 'v0.2.0'
+    types:
+      - closed
 
 permissions:
   contents: write
@@ -29,6 +33,9 @@ jobs:
             go-version: stable
         # More assembly might be required: Docker logins, GPG, etc. It all depends
         # on your needs.
+
+        - name: Tag release
+          run: git tag v0.2.${{ github.run_number }}
 
         - uses: goreleaser/goreleaser-action@v4
           with:
