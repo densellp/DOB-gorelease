@@ -43,4 +43,3 @@ jobs:
             distribution: goreleaser
             version: latest
             args: release --clean
-            # New Comment Check
